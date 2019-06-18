@@ -96,4 +96,9 @@ public class RedisListController {
     public void range() {
         redisList.range();
     }
+
+    @GetMapping("/list-delete")
+    public void listDelete() {
+        redisList.delete();
+    }
 }

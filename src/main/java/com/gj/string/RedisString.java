@@ -19,7 +19,9 @@ public class RedisString {
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     * 往redis插入值，可以设置过期时间
+     * 新增一个字符串类型的值,key是键，value是值。
+     *
+     * set(K key, V value)
      */
     public void set() {
         // 存入永久数据
@@ -30,6 +32,8 @@ public class RedisString {
 
     /**
      * 批量插入，key值存在会覆盖原值
+     *
+     * multiSet(Map<? extends K,? extends V> map)
      */
     public void multiSet() {
         Map<String,String> map = new HashMap<>(16);
@@ -40,6 +44,8 @@ public class RedisString {
 
     /**
      *  批量插入，如果里面的所有key都不存在，则全部插入，返回true，如果其中一个在redis中已存在，全不插入，返回false
+     *
+     *  multiSetIfAbsent(Map<? extends K,? extends V> map)
      */
     public void multiSetIfAbsent() {
         Map<String,String> map = new HashMap<>(16);
@@ -51,6 +57,8 @@ public class RedisString {
 
     /**
      * 如果不存在则插入，返回true为插入成功,false失败
+     *
+     * setIfAbsent(K key, V value)
      */
     public void setIfAbsent() {
         Boolean absent = stringRedisTemplate.opsForValue().setIfAbsent("test", "hello redis");
@@ -58,6 +66,8 @@ public class RedisString {
     }
     /**
      * 获取值,key不存在返回null
+     *
+     * get(Object key)
      */
     public void get() {
         System.out.println(stringRedisTemplate.opsForValue().get("testMultiSet1"));
@@ -65,6 +75,8 @@ public class RedisString {
 
     /**
      * 批量获取，key不存在返回null
+     *
+     * multiGet(Collection<K> keys)
      */
     public void multiGet() {
         List<String> list = stringRedisTemplate.opsForValue().multiGet(Arrays.asList("test", "test2"));
@@ -73,7 +85,9 @@ public class RedisString {
     }
 
     /**
-     * 获取指定key的value长度
+     * 获取指定字符串的长度。
+     *
+     * size(K key)
      */
     public void getLength() {
         Long size = stringRedisTemplate.opsForValue().size("test");
@@ -81,7 +95,9 @@ public class RedisString {
     }
 
     /**
-     * 往指定key末尾追加，返回当前key的value大小，如果key不存在会新创建一个
+     * 在原有的值基础上新增字符串到末尾。
+     *
+     * append(K key, String value)
      */
     public void append() {
         Integer append = stringRedisTemplate.opsForValue().append("test3", "database");
@@ -89,7 +105,9 @@ public class RedisString {
     }
 
     /**
-     * 获取指定key，并重新设置值，返回旧值，如果key不存在会新创建一个
+     * 获取原来key键对应的值并重新赋新值
+     *
+     * getAndSet(K key, V value)
      */
     public void getAndSet() {
         String set = stringRedisTemplate.opsForValue().getAndSet("test", "set test");
@@ -98,6 +116,8 @@ public class RedisString {
 
     /**
      * 获取指定key的值进行减1，如果value不是integer类型，会抛异常，如果key不存在会创建一个，默认value为0
+     *
+     * decrement(k key)
      */
     public void decrement() {
         stringRedisTemplate.opsForValue().decrement("test2");
@@ -106,6 +126,8 @@ public class RedisString {
 
     /**
      * 获取指定key的值进行加1，如果value不是integer类型，会抛异常，如果key不存在会创建一个，默认value为0
+     *
+     * increment(k key)
      */
     public void increment() {
         stringRedisTemplate.opsForValue().increment("test2");
@@ -114,6 +136,8 @@ public class RedisString {
 
     /**
      * 删除指定key,成功返回true，否则false
+     *
+     * delete(k key)
      */
     public void delete() {
         Boolean delete = stringRedisTemplate.opsForValue().getOperations().delete("test1");
@@ -122,6 +146,8 @@ public class RedisString {
 
     /**
      * 删除多个key，返回删除key的个数
+     *
+     * delete(k ...keys)
      */
     public void deleteMulti() {
         Long delete = stringRedisTemplate.opsForValue().getOperations().delete(Arrays.asList("test1", "test2"));
